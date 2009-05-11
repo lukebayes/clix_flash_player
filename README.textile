@@ -2,9 +2,8 @@ h1. CLIX FlashPlayer
 
 This is a Command Line interface to the Flash Player for OS X.
 
-This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly on OS X at all.
+This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly at all.
 
-Thanks to the exceedingly poor non-blocking design of the <code>open</code> command on OS X, it is difficult to launch and control an instance of the Flash Player from a terminal application.
 
 h1. The Problem(s)
 

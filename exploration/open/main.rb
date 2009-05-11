@@ -13,14 +13,12 @@ class FlashPlayer
     
   end
   
-  def osa_str(player, swf)
-    str = <<EOF
-EOF
-    
-  end
-  
   def join
     @thread.join
+  end
+  
+  def kill
+
   end
   
 end
@@ -31,3 +29,7 @@ puts "Player Returned"
 
 player.join
 
+trap 'SIGHUP' do
+  print "Trapped SIGHUP!"
+  player.kill
+end
