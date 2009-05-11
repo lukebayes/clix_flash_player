@@ -1,0 +1,31 @@
+h1. CLIX FlashPlayer
+
+This is a Command Line interface to the Flash Player for OS X.
+
+This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly on OS X at all.
+
+Thanks to the exceedingly poor non-blocking design of the <code>open</code> command on OS X, it is difficult to launch and control an instance of the Flash Player from a terminal application.
+
+h1. The Problem(s)
+
+We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. 
+
+The Flash Player execution thread should block until:
+
+# The Flash Player is Quit using File >> Quit or CMD+Q
+# The terminal application is interrupted (SIGHUP) using CTRL+C
+
+The Flash Player should be focused and controlled whether or not a runtime exception occurs in the first frame of the loaded SWF file.
+
+h1. Attempts
+
+h3. <code>open</code> command
+
+The first approach was to use the OS X <code>open</code> command. The problem with open, is that it expects a single application argument, not an application and the file that it should open. When <code>open</code> is sent a second argument, it runs itself twice - leading to two instances of the Flash Player.
+
+h3. <code>exec</code> Flash Player.app/Contents/MacOS/FlashPlayer
+
+This approach is promising in that it is blocking, but suffers because the Flash Player is launched behind all other applications and if a runtime exception is encountered in the loaded SWF, attempts to focus the player lock the process and orphan it when we CTRL+C our parent application.
+
+h3. <code>exec</code> Flash Player.app
+
