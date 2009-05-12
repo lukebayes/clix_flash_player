@@ -11,7 +11,6 @@ good_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProj
 bad_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/InstantRuntimeException.swf'
 
 player = player.split(' ').join('\ ')
-# Thread.abort_on_exception = true
 
 player_thread = Thread.new {
   system("#{player}")
@@ -21,12 +20,7 @@ player_thread = Thread.new {
 command = "ruby /Users/lbayes/Projects/CLIXFlashPlayer/exploration/rb-appscript/child_process.rb"
 activate_pid = open4.popen4(command)[0]
 
-# Signal.trap('SIGINT', activate_pid) do
-#   puts "SIGINT D ENCOUNTERED!"
-# end
-
 puts "Player Launched with #{activate_pid}"
-# Process.wait(activate_pid)
 
 begin
   if(player_thread.alive?)

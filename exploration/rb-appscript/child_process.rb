@@ -10,7 +10,7 @@ player = player10
 good_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProject.swf'
 bad_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/InstantRuntimeException.swf'
 
-swf = bad_swf
+swf = good_swf
 
 # Give the player focus:
 Appscript.app(player).activate
