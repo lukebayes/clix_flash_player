@@ -4,8 +4,9 @@ player = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/9.0.151/Fl
 swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProject.swf'
 
 thread = Thread.new {
-  exec("open -W '#{player}' '#{swf}'")
+  system("open -W '#{player}' '#{swf}'")
 }
 
+puts "Player Launched"
 thread.join
 puts "Player Returned"

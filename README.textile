@@ -38,6 +38,14 @@ At first blush, this appears to work great, then we encounter the uncaught (actu
 
 If the SWF file we send the player has an uncaught runtime exception, our AppleScript process becomes locked, and no longer responds to SIGINT (CTRL+C). The whole mess must instead be sent the SIGSTOP (CTRL+Z) and later killed with SIGKILL (kill -9 [pid]).
 
+h2. Applescript Wrapper
+
+We can try writing a terminal application using AppleScript that will launch the Flash Player, activate it, and _then_ open the requisite SWF file, which will presumably avoid breakage on runtime exceptions.
+
+This worked great, except using the _osascript_ application to call the AppleScript, apparently breaks the SIGINT relationship from parent to child. So when the parent is aborted, the child is orphaned.
+
+
+
 
 
 
