@@ -2,24 +2,25 @@ h1. CLIX FlashPlayer
 
 This is a Command Line interface to the Flash Player for OS X.
 
-This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly at all.
+This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly when executed by another process.
 
 h1. The Problem(s)
 
-We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. The Flash Player execution thread should block until:
+We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. The Flash Player execution thread should block until the user selects File >> Quit (or hits CMD+Q), or until the parent application is interrupted (SIGHUP) using CTRL+C.
 
-# The Flash Player is Quit using File >> Quit or CMD+Q
-# The terminal application is interrupted (SIGHUP) using CTRL+C
-
-The Flash Player should be focused and controlled whether or not a runtime exception occurs in the first frame of the loaded SWF file.
+The Flash Player should be focused and still terminate whether or not a runtime exception occurs in the first frame (or any frame) of the loaded SWF file.
 
 h1. Attempts
 
 h3. <code>open</code> command
 
-The first approach was to use the OS X <code>open</code> command. The problem with open, is that it expects a single application argument, not an application and the file that it should open. When <code>open</code> is sent a second argument, it runs itself twice - leading to two instances of the Flash Player.
+The first approach was to simply use the OS X <code>open</code> command. The problem with open, is that it expects a single application _or_ file argument, not an application _and_ file. 
 
-h3. <code>exec</code> Flash Player.app/Contents/MacOS/FlashPlayer with SWF argument
+When <code>open</code> is sent a second argument, it appears to be the same as if open was called twice - this usually causes two instances of the Flash Player to be launched.
+
+We can't call <code>open</code> with only the SWF file because then it launches an arbitrary Flash Player and not necessarily the specific version that we need.
+
+h3. <code>exec</code> Flash Player.app with the SWF file as an argument
 
 This approach is promising in that it is blocking, but suffers because the Flash Player is launched behind all other applications and if a runtime exception is encountered in the loaded SWF, attempts to focus the player lock the process and orphan it when we CTRL+C our parent application.
 

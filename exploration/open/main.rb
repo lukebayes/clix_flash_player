@@ -4,32 +4,29 @@ require 'open4'
 
 class FlashPlayer
   
-  attr_accessor :pid, :read, :write, :error
+  attr_accessor :player, :swf
   
-  def initialize(player, swf)
-    @thread = Thread.new {
-      system("osascript ../applescript/OSAFlashPlayer.scpt '#{player}' '#{swf}'")
-    }
-    
+  def initialize
+    @player = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/9.0.151/Flash Player.app'
+    @swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProject.swf'
   end
+  
+  # Causes the launch of two Flash Players
+  def open_double_bug
+    @thread = Thread.new {
+      exec("open -W '#{player}' '#{swf}'")
+    }
+  end
+  
   
   def join
     @thread.join
   end
   
-  def kill
-
-  end
-  
 end
 
-
-player = FlashPlayer.new('/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/9.0.151/Flash Player.app', 'Users:lbayes:Projects:CLIXFlashPlayer:exploration:fixtures:SomeProject.swf')
-puts "Player Returned"
+player = FlashPlayer.new
+player.open_double_bug
 
 player.join
-
-trap 'SIGHUP' do
-  print "Trapped SIGHUP!"
-  player.kill
-end
+puts "Player Returned"
