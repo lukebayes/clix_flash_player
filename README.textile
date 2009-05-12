@@ -34,12 +34,6 @@ This approach is the most promising yet in that it blocks the parent thread and 
 
 Unfortunately, this doesn't work for us because the Flash Player is never focused, and actually launches _behind_ all other applications. 
 
-h2. Exec Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument, and use AppleScript to focus the damn thing
-
-At first blush, this appears to work great, then we encounter the uncaught (actually _uncatchable_) runtime exception...
-
-If the SWF file we send the player has an uncaught runtime exception, our AppleScript process becomes locked, and no longer responds to SIGINT (CTRL+C). The whole mess must instead be sent the SIGSTOP (CTRL+Z) and later killed with SIGKILL (kill -9 [pid]).
-
 h2. AppleScript Wrapper
 
 We can try writing a terminal application using AppleScript that will launch the Flash Player, activate it, and _then_ open the requisite SWF file, which will presumably avoid breakage on runtime exceptions.
@@ -52,8 +46,15 @@ Will the AppleScript behave differently as a full OS X _.app_?
 
 This is awesome because the .app file actually throws a modal "Are you sure?" prompt - _behind_ all other applications. It also doesn't seem to accept command line parameters properly.
 
+h2. Exec Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument, and use AppleScript to focus the damn thing
+
+At first blush, this appears to work great, then we encounter the uncaught (actually _uncatchable_) runtime exception...
+
+If the SWF file we send the player has an uncaught runtime exception, the dialog appears behind all other applications, our AppleScript process becomes locked, and no longer responds to SIGINT (CTRL+C). The whole mess must instead be sent the SIGSTOP (CTRL+Z) and later killed with SIGKILL (kill -9 [pid]).
+
 h2. Use rb-appscript to Launch Flash Player.app, Focus the app, and Open the SWF
 
-This approach seems to work well right up until we get that runtime exception. Seems one of the threads gets blocked and becomes unresponsive.
+This approach seems to work better than the exec and focus strategy because we are able to focus (activate) the player _before_ sending it a failing SWF file. This at least gives us the error dialog in front of other applications. We get the added benefit in that if we manually dismiss the dialog, our process works normally.
 
+Unfortunately, if we interrupt the parent process (CTRL+C) before dismissing the dialog, our parent process becomes locked and must be killed brutally with SIGKILL.
 
