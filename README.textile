@@ -10,6 +10,8 @@ We need to be able to execute and focus a specific instance of the Flash Player 
 
 The Flash Player should be focused and still terminate whether or not a runtime exception occurs in the first frame (or any frame) of the loaded SWF file.
 
+Our solution should work each revision of the Flash Player, from 9.0.115 and greater.
+
 h1. Attempts
 
 h2. Open command
@@ -44,9 +46,11 @@ We can try writing a terminal application using AppleScript that will launch the
 
 This worked great, except using the _osascript_ application to call the AppleScript, apparently breaks the SIGINT relationship from parent to child. So when the parent is aborted, the child is orphaned.
 
-h1. Solution
+h2. AppleScript Application
 
-There is not yet a usable, complete solution to this problem, but we are actively working on it. 
+Will the AppleScript behave differently as a full OS X _.app_?
 
-Any assistance would be greatly appreciated!
+This is awesome because the .app file actually throws a modal "Are you sure?" prompt - _behind_ all other applications. It also doesn't seem to accept command line parameters properly.
+
+
 
