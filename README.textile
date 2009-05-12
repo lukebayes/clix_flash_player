@@ -20,6 +20,8 @@ When <code>open</code> is sent a second argument, it appears to be the same as i
 
 We can't call <code>open</code> with only the SWF file because then it launches an arbitrary Flash Player and not necessarily the specific version that we need.
 
+Finally, <code>open</code> has the additional disadvantage in that when we send SIGHUP to the parent process, the child Players are orphaned.
+
 h3. <code>exec</code> Flash Player.app with the SWF file as an argument
 
 This approach is promising in that it is blocking, but suffers because the Flash Player is launched behind all other applications and if a runtime exception is encountered in the loaded SWF, attempts to focus the player lock the process and orphan it when we CTRL+C our parent application.
