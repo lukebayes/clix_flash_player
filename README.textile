@@ -24,6 +24,10 @@ Finally, <code>open</code> has the additional disadvantage in that when we send 
 
 h3. <code>exec</code> Flash Player.app with the SWF file as an argument
 
-This approach is promising in that it is blocking, but suffers because the Flash Player is launched behind all other applications and if a runtime exception is encountered in the loaded SWF, attempts to focus the player lock the process and orphan it when we CTRL+C our parent application.
+Doesn't work because Flash Player.app is a directory. Thanks Steve!
 
+h3. <code>exec</code> Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument
 
+This approach is the most promising yet in that it blocks the parent thread and returns when the Player is Quit and it kills the Player process when the parent is interrupted.
+
+Unfortunately, this doesn't work for us because the Flash Player is never focused, and actually launches _behind_ all other applications. When we attempt use AppleScript to focus the Player, this causes major issues if our SWF file has a runtime exception before the focus event was handled.
