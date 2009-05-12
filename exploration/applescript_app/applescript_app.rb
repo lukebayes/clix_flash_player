@@ -4,8 +4,7 @@ player = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/9.0.151/Fl
 swf = 'Users:lbayes:Projects:CLIXFlashPlayer:exploration:fixtures:SomeProject.swf'
 
 thread = Thread.new {
-  # Orphans Flash Player when parent is interrupted (CTRL+C):
-  system("osascript -s e applescript/OSAFlashPlayer.scpt '#{player}' '#{swf}'")
+  system("applescript_app/OSAFlashPlayer.app '#{player}' '#{swf}'")
 }
 
 puts "Player Launched"
