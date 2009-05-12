@@ -44,17 +44,9 @@ We can try writing a terminal application using AppleScript that will launch the
 
 This worked great, except using the _osascript_ application to call the AppleScript, apparently breaks the SIGINT relationship from parent to child. So when the parent is aborted, the child is orphaned.
 
-h2. AppleScript Application
+h1. Solution
 
-Will the AppleScript behave differently as a full OS X _.app_?
+There is not yet a usable, complete solution to this problem, but we are actively working on it. 
 
-This is awesome because the .app file actually throws a modal "Are you sure?" prompt - _behind_ all other applications. It also doesn't seem to accept command line parameters properly.
-
-
-
-
-
-
-
-
+Any assistance would be greatly appreciated!
 
