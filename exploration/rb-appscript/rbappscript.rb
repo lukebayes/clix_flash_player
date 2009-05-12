@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'rubygems'
-require 'appscript'
+require 'open4'
 
 player9 = "/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/9.0.151/Flash Player.app/Contents/MacOS/Flash Player"
 player10 = "/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/10.0.22.87/Flash Player.app/Contents/MacOS/Flash Player"
@@ -10,22 +10,37 @@ player = player10
 good_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProject.swf'
 bad_swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/InstantRuntimeException.swf'
 
-swf = good_swf
+player = player.split(' ').join('\ ')
+# Thread.abort_on_exception = true
 
-# Open the player direectly without a SWF file:
 player_thread = Thread.new {
-  system("'#{player}'")
+  system("#{player}")
   puts "player closed"
 }
 
-# Give the player focus:
-activate_thread = Thread.new {
-  Appscript.app(player).activate
-  puts "activate succeeded"
-  Appscript.app(player).open(MacTypes::Alias.path(swf))
-  puts "open succeeded"
-}
+command = "ruby /Users/lbayes/Projects/CLIXFlashPlayer/exploration/rb-appscript/child_process.rb"
+activate_pid = open4.popen4(command)[0]
 
-puts "Player Launched"
-player_thread.join
-puts "Player Returned"
+# Signal.trap('SIGINT', activate_pid) do
+#   puts "SIGINT D ENCOUNTERED!"
+# end
+
+puts "Player Launched with #{activate_pid}"
+# Process.wait(activate_pid)
+
+begin
+  if(player_thread.alive?)
+    player_thread.join
+  end
+rescue StandardError => e
+  puts ">> rescued player join with: #{player_thread}"
+end
+
+begin
+  puts "kill process with: #{activate_pid}"
+  Process.kill("KILL", activate_pid)
+rescue StandardError => e
+  puts ">> rescued from killer with: #{e}"
+end
+
+puts "Player Returned from: #{activate_pid}"
