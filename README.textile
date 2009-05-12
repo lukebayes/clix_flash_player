@@ -12,7 +12,7 @@ The Flash Player should be focused and still terminate whether or not a runtime 
 
 h1. Attempts
 
-h3. <code>open</code> command
+h2. Open command
 
 The first approach was to simply use the OS X <code>open</code> command. The problem with open, is that it expects a single application _or_ file argument, not an application _and_ file. 
 
@@ -22,17 +22,17 @@ We can't call <code>open</code> with only the SWF file because then it launches 
 
 Finally, <code>open</code> has the additional disadvantage in that when we send SIGINT to the parent process, the child Players are orphaned.
 
-h3. <code>exec</code> Flash Player.app with the SWF file as an argument
+h2. Exec Flash Player.app with the SWF file as an argument
 
-Doesn't work because Flash Player.app is a directory. Thanks Steve!
+Of course, this doesn't work because Flash Player.app is a directory. Thanks Steve!
 
-h3. <code>exec</code> Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument
+h2. Exec Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument
 
 This approach is the most promising yet in that it blocks the parent thread and returns when the Player is Quit and it kills the Player process when the parent is interrupted.
 
 Unfortunately, this doesn't work for us because the Flash Player is never focused, and actually launches _behind_ all other applications. 
 
-h3. <code>exec</code> Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument, and use AppleScript to focus the damn thing
+h2. Exec Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument, and use AppleScript to focus the damn thing
 
 At first blush, this appears to work great, then we encounter the uncaught (actually _uncatchable_) runtime exception...
 
