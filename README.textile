@@ -52,5 +52,8 @@ Will the AppleScript behave differently as a full OS X _.app_?
 
 This is awesome because the .app file actually throws a modal "Are you sure?" prompt - _behind_ all other applications. It also doesn't seem to accept command line parameters properly.
 
+h2. Use rb-appscript to Launch Flash Player.app, Focus the app, and Open the SWF
+
+This approach seems to work well right up until we get that runtime exception. Seems one of the threads gets blocked and becomes unresponsive.
 
 
