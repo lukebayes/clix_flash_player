@@ -6,7 +6,7 @@ This project was created because unlike the modern distributions of the desktop 
 
 h1. The Problem(s)
 
-We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. The Flash Player execution thread should block until the user selects File >> Quit (or hits CMD+Q), or until the parent application is interrupted (SIGHUP) using CTRL+C.
+We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. The Flash Player execution thread should block until the user selects File >> Quit (or hits CMD+Q), or until the parent application is interrupted (SIGINT) using CTRL+C.
 
 The Flash Player should be focused and still terminate whether or not a runtime exception occurs in the first frame (or any frame) of the loaded SWF file.
 
@@ -20,7 +20,7 @@ When <code>open</code> is sent a second argument, it appears to be the same as i
 
 We can't call <code>open</code> with only the SWF file because then it launches an arbitrary Flash Player and not necessarily the specific version that we need.
 
-Finally, <code>open</code> has the additional disadvantage in that when we send SIGHUP to the parent process, the child Players are orphaned.
+Finally, <code>open</code> has the additional disadvantage in that when we send SIGINT to the parent process, the child Players are orphaned.
 
 h3. <code>exec</code> Flash Player.app with the SWF file as an argument
 
@@ -30,4 +30,19 @@ h3. <code>exec</code> Flash Player.app/Contents/MacOS/Flash Player binary with t
 
 This approach is the most promising yet in that it blocks the parent thread and returns when the Player is Quit and it kills the Player process when the parent is interrupted.
 
-Unfortunately, this doesn't work for us because the Flash Player is never focused, and actually launches _behind_ all other applications. When we attempt use AppleScript to focus the Player, this causes major issues if our SWF file has a runtime exception before the focus event was handled.
+Unfortunately, this doesn't work for us because the Flash Player is never focused, and actually launches _behind_ all other applications. 
+
+h3. <code>exec</code> Flash Player.app/Contents/MacOS/Flash Player binary with the SWF file as an argument, and use AppleScript to focus the damn thing
+
+At first blush, this appears to work great, then we encounter the uncaught (actually _uncatchable_) runtime exception...
+
+If the SWF file we send the player has an uncaught runtime exception, our AppleScript process becomes locked, and no longer responds to SIGINT (CTRL+C). The whole mess must instead be sent the SIGSTOP (CTRL+Z) and later killed with SIGKILL (kill -9 [pid]).
+
+
+
+
+
+
+
+
+

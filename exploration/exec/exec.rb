@@ -9,9 +9,11 @@ swf = '/Users/lbayes/Projects/CLIXFlashPlayer/exploration/fixtures/SomeProject.s
 #   exec("'#{player_app}' '#{swf}'")
 # }
 
+# Fails because of focus issues, and runtime exceptions
 thread = Thread.new {
-  exec("'#{player_bin}' '#{swf}'")
+  system("'#{player_bin}' '#{swf}'")
 }
 
+puts "Player Launched"
 thread.join
 puts "Player Returned"
