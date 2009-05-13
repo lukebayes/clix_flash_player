@@ -5,6 +5,7 @@ class CLIXFlashPlayer
   
   def initialize
     @activate_pid = nil
+    @player_pid = nil
     @player_thread = nil
     @thread = nil
   end
@@ -15,7 +16,7 @@ class CLIXFlashPlayer
       swf = File.expand_path(swf)
     
       @player_thread = Thread.new {
-        system("#{player.split(' ').join('\ ')}")
+        @player_pid = open4.popen4("#{player.split(' ').join('\ ')}")[0]
         puts "player closed"
       }
 
@@ -42,10 +43,11 @@ class CLIXFlashPlayer
   def kill
     begin
       puts "kill process with: #{@activate_pid}"
-      Process.kill("KILL", @activate_pid)
-      Process.wait(@activate_pid)
+      # Process.kill("KILL", @activate_pid)
+      # Process.wait(@activate_pid)
+      exec("kill -9 #{@player_pid}")
       puts "killing thread: #{@player_thread}"
-      @player_thread.kill!
+      # @player_thread.kill
     rescue StandardError => e
       puts ">> rescued from killer with: #{e}"
     end

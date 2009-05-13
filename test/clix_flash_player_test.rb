@@ -21,9 +21,9 @@ class CLIXFlashPlayerTest <  Test::Unit::TestCase
     player = CLIXFlashPlayer.new
     player.execute(@flash_player9, @good_swf)
 
-    sleep(4.0)
-    puts "killing now"
-    player.kill
+    # sleep(4.0)
+    # puts "killing now"
+    # player.kill
     player.join
     
   end

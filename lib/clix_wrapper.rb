@@ -29,9 +29,11 @@ end
 # player = File.expand_path(player).split(' ').join('\ ')
 # swf = File.expand_path(swf).split(' ').join('\ ')
 
+
 # Give the player focus:
 Appscript.app(player).activate
 puts "activate succeeded"
+# Open the SWF:
 Appscript.app(player).open(MacTypes::Alias.path(swf))
 puts "open succeeded"
 
