@@ -58,3 +58,8 @@ This approach seems to work better than the exec and focus strategy because we a
 
 Unfortunately, if we interrupt the parent process (CTRL+C) before dismissing the dialog, our parent process becomes locked and must be killed brutally with SIGKILL.
 
+h1. Solution
+
+The only solution that I've been able to get consistently working, is to fork on the AppleScript features and use Process.kill when we interrupt the application.
+
+An example of this process can be seen in exploration/rb-appscript
