@@ -27,7 +27,7 @@ class CLIXFlashPlayer
   end
   
   def kill
-    exec("kill -9 #{@player_pid}")
+    system("kill -9 #{@player_pid}")
   end
   
   def join
