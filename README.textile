@@ -60,6 +60,6 @@ Unfortunately, if we interrupt the parent process (CTRL+C) before dismissing the
 
 h1. Solution
 
-The only solution that I've been able to get consistently working, is to fork on the AppleScript features and use Process.kill when we interrupt the application.
+The only solution that I've been able to get consistently working, is to fork on the AppleScript features and use exec <code>kill -9 [process]</code> when we interrupt the application.
 
-An example of this process can be seen in exploration/rb-appscript
+An example of this process can be seen in the <code>lib</code> and <code>test</code> packages of this project.
