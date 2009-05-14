@@ -17,6 +17,7 @@ class CLIXFlashPlayer
     
       @player_thread = Thread.new {
         @player_pid = open4.popen4("#{player.split(' ').join('\ ')}")[0]
+        Process.wait(@player_pid)
         puts "player closed"
       }
 
