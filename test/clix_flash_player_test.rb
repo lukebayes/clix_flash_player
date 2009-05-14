@@ -16,13 +16,18 @@ class CLIXFlashPlayerTest <  Test::Unit::TestCase
   end
   
   def test_good_swf
-    player = nil
+    player = CLIXFlashPlayer.new
+    player.execute(@flash_player9, @good_swf)
+    sleep(4.0)
+    player.kill
+    player.join
+  end
 
+  def test_bad_swf
     player = CLIXFlashPlayer.new
     player.execute(@flash_player9, @bad_swf)
-    # sleep(4.0)
-    # puts ">> killing now"
-    # player.kill
+    sleep(4.0)
+    player.kill
     player.join
   end
 

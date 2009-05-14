@@ -1,7 +1,11 @@
 require 'rubygems'
 require 'open4'
 
+$:.unshift(File.dirname(__FILE__)) unless
+  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+
 class CLIXFlashPlayer
+  VERSION = '0.1.0'
   
   def initialize
     @activate_pid = nil

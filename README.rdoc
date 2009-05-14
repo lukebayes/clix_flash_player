@@ -1,0 +1,55 @@
+= CLIX Flash Player
+
+== DESCRIPTION:
+
+This is a Command Line interface to the Flash Player for OS X.
+
+This project was created because unlike the modern distributions of the desktop debug Flash Player on Windows and Linux, the OS X distribution does not behave properly when executed by another process.
+
+== FEATURES/PROBLEMS:
+
+We need to be able to execute and focus a specific instance of the Flash Player along with a specific SWF file. The Flash Player execution thread should block until the user selects File >> Quit (or hits CMD+Q), or until the parent application is interrupted (SIGINT) using CTRL+C.
+
+The Flash Player should be focused and still terminate whether or not a runtime exception occurs in the first frame (or any frame) of the loaded SWF file.
+
+Our solution should work each revision of the Flash Player, from 9.0.115 and greater.
+
+== SYNOPSIS:
+
+You can use this application by targeting a specific, downloaded instance of the Flash Player and a SWF file as follows:
+
+    flash_player = "Flash Player.app/Content/MacOS/Flash Player"
+    swf = "bin/SomeProject.swf"
+
+    player = CLIXFlashPlayer.new
+    player.execute(flash_player, swf)
+
+
+== REQUIREMENTS:
+
+Simply executing the Flash Player on OS X does not give us the ability to focus it, or continue to control or kill it when an uncaught runtime exception is encountered.
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2009 Pattern Park, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

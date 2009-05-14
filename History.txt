@@ -1,0 +1,5 @@
+== 0.1.0 14/5/2009
+	
+* 1 major improvement
+  * Created and built the solution
+  * Explored different strategies for solving the problem
