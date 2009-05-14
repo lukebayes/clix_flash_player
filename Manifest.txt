@@ -1,9 +1,10 @@
 Manifest.txt
+History.txt
 rakefile.rb
 lib/clix_flash_player.rb
 lib/clix_wrapper.rb
 script/console
 script/destroy
 script/generate
-test/test_clix_flash_player.rb
+test/clix_flash_player_test.rb
 test/test_helper.rb
