@@ -29,6 +29,8 @@ You can use this application by targeting a specific, downloaded instance of the
 
 Simply executing the Flash Player on OS X does not give us the ability to focus it, or continue to control or kill it when an uncaught runtime exception is encountered.
 
+The CLIXFlashPlayer provides full control over the process that represents the Flash Player.
+
 == LICENSE:
 
 (The MIT License)

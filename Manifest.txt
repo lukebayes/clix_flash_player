@@ -1,6 +1,7 @@
 Manifest.txt
 History.txt
 rakefile.rb
+README.rdoc
 lib/clix_flash_player.rb
 lib/clix_wrapper.rb
 script/console
