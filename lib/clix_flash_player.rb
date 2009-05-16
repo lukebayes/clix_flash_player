@@ -13,14 +13,15 @@ class CLIXFlashPlayer
     @activate_pid = nil
     @player_pid = nil
     @thread = nil
-    setup_trap
   end
   
   def execute(player, swf)
+    cleanup
     validate(player, swf)
+    player = File.expand_path(File.join(player, 'Contents', 'MacOS', 'Flash Player'))
+    swf = File.expand_path(swf)
+    setup_trap
     @thread = Thread.new {
-      player = File.expand_path(File.join(player, 'Contents', 'MacOS', 'Flash Player'))
-      swf = File.expand_path(swf)
       @player_pid = open4.popen4("#{player.split(' ').join('\ ')}")[0]
       wrapper = File.expand_path(File.dirname(__FILE__) + '/clix_wrapper.rb')
       command = "ruby #{wrapper} '#{player}' '#{swf}'"
@@ -43,10 +44,16 @@ class CLIXFlashPlayer
   
   private
   
+  def cleanup
+    if(@thread && @thread.alive?)
+      kill
+      @thread.join
+    end
+  end
+  
   def validate(player, swf)
     raise CLIXFlashPlayerError.new("Player must not be nil") if(player.nil? || player == '')
     raise CLIXFlashPlayerError.new("Player cannot be found: '#{player}'") if(!File.exists?(player))
-
     raise CLIXFlashPlayerError.new("SWF must not be nil") if(swf.nil? || swf == '')
     raise CLIXFlashPlayerError.new("SWF cannot be found: '#{swf}'") if(!File.exists?(swf))
   end

@@ -42,8 +42,17 @@ class CLIXFlashPlayerTest <  Test::Unit::TestCase
       player.execute(@flash_player9, 'foo')
     end
   end
+    
+  def test_second_execute
+    player = CLIXFlashPlayer.new
+    player.execute(@flash_player9, @good_swf)
+    sleep(4.0)
+    player.execute(@flash_player10, @good_swf)
+    sleep(4.0)
+    player.kill
+    player.join
+  end
 
-=begin  
   def test_good_swf
     player = CLIXFlashPlayer.new
     player.execute(@flash_player9, @good_swf)
@@ -59,6 +68,5 @@ class CLIXFlashPlayerTest <  Test::Unit::TestCase
     player.kill
     player.join
   end
-=end
 
 end
