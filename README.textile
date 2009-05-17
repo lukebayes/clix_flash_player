@@ -64,6 +64,29 @@ The only solution that I've been able to get consistently working, is to fork on
 
 An example of this process can be seen in the <code>lib</code> and <code>test</code> packages of this project.
 
+h1. Example
+
+You can install the latest version of this project as a gem with:
+
+<pre><code>
+gem sources -a http://gems.github.com (you only have to do this once)
+gem install lukebayes/clix_flash_player
+</code></pre>
+
+You can use the library in your Ruby code like this:
+
+<pre><code>
+require 'rubygems'
+require 'clix_flash_player'
+
+player = CLIXFlashPlayer.new
+player.execute('bin/Flash Player.app', 'bin/MyProject.swf')
+
+# Do something else here...
+
+player.join
+</code></pre>
+
 h1. MIT License
 
 <pre>
