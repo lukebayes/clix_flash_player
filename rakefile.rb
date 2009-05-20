@@ -17,5 +17,28 @@ rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
+def make_test_cmd multi = false # :nodoc:
+  test_globs = ['test/*_test.rb']
+  tests = ["rubygems", 'test/unit'] +
+  test_globs.map { |g| Dir.glob(g) }.flatten
+  tests.map! {|f| %(require "#{f}")}
+
+  filter = ENV['FILTER'] || ENV['TESTOPTS']
+  cmd = "-e '#{tests.join("; ")}' #{filter}"
+
+  if multi then
+    ENV['EXCLUDED_VERSIONS'] = multiruby_skip.join ":"
+    cmd = "-S multiruby #{cmd}"
+  end
+
+  cmd
+end
+
+desc 'Run the test suite. Use FILTER or TESTOPTS to add flags/args.'
+task :test do
+  ruby make_test_cmd
+end
+
+
 # require 'newgem/tasks' # load /tasks/*.rake
 # Dir['tasks/**/*.rake'].each { |t| load t }
