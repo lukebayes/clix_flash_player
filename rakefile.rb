@@ -17,6 +17,9 @@ rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
+# Ugly hack stolen from Hoe to execute test cases...
+# need an internet connection to figure out how to 
+# get Jeweler to execute my tests.
 def make_test_cmd multi = false # :nodoc:
   test_globs = ['test/*_test.rb']
   tests = ["rubygems", 'test/unit'] +
