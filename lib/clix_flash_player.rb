@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'open4'
 
+$CLIX_WRAPPER_TARGET = File.join(File.expand_path(File.dirname(__FILE__)), 'clix_wrapper.rb')
+
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
@@ -17,16 +19,30 @@ class CLIXFlashPlayer
   
   def execute(player, swf)
     cleanup
+    player = clean_path(player)
+    swf = clean_path(swf)
     validate(player, swf)
-    player = File.expand_path(File.join(player, 'Contents', 'MacOS', 'Flash Player'))
-    swf = File.expand_path(swf)
+    
+    if(!player.match('Contents/MacOS'))
+      player = File.join(player, 'Contents', 'MacOS', 'Flash Player')
+    end
+
     setup_trap
+    
     @thread = Thread.new {
       @player_pid = open4.popen4("#{player.split(' ').join('\ ')}")[0]
-      wrapper = File.expand_path(File.dirname(__FILE__) + '/clix_wrapper.rb')
-      command = "ruby #{wrapper} '#{player}' '#{swf}'"
-      @activate_pid = open4.popen4(command)[0]
-      Process.wait(@player_pid)
+      begin
+        raise "clix_wrapper.rb could not be found at: #{wrapper}" if !File.exists?($CLIX_WRAPPER_TARGET)
+        command = "ruby #{$CLIX_WRAPPER_TARGET} '#{player}' '#{swf}'"
+        @activate_pid, stdin, stdout, stderr = open4.popen4(command)
+        puts stdout.read
+        error = stderr.read
+        raise error if !error.nil? && error != ''
+        Process.wait(@player_pid)
+      rescue StandardError => e
+        kill
+        raise e
+      end
     }
   end
   
@@ -35,7 +51,9 @@ class CLIXFlashPlayer
   end
   
   def join
-    @thread.join
+    if(@thread.alive?)
+      @thread.join
+    end
   end
   
   def alive?
@@ -43,6 +61,10 @@ class CLIXFlashPlayer
   end
   
   private
+  
+  def clean_path(path)
+    File.expand_path(path.gsub("'", '').gsub("\\", ''))
+  end
   
   def cleanup
     if(@thread && @thread.alive?)
